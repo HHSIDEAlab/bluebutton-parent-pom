@@ -40,6 +40,29 @@ It can be run as follows:
     ```
     $ ./devenv-install.py
     ```
+1. Associate .sh files with Cygwin.
+  * Shell scripts that end in .sh should be associated with the Cygwin shell you have chosen to use.  Follow these steps to change the association for your installation:
+    1. Open a Command Prompt by pressing the Windows Key+R, type "cmd" and press return.
+    1. In the newly opened command prompt type:
+
+        ``` 
+        # Everything after .sh= is the ftype name
+        > assoc .sh
+        .sh=sh_auto_file
+        ``` 
+    1. Using the ftype name discovered in the previous step check the current association:
+
+        ```
+        # Example of sh_auto_file set to use git-bash
+        > ftype sh_auto_file
+        sh_auto_file="C:\Git\git-bash.exe" --no-cd "%L" %*
+        ```
+    1. If necessary, change the .sh association to use your Cygwin shell:
+
+        ```
+        # Example setting Cygwin bash to be associated with .sh files 
+        > ftype sh_auto_file="C:\cygwin64\bin\bash.exe" %1 %*"
+        ```
 
 What does it do for you? Great question! It will create a `~/workspaces/tools/` directory and then download and install (as a user) the following into there for you:
 
@@ -60,17 +83,19 @@ Right now, the script does not create the Maven `toolchains.xml` file (though it
 ```
 <?xml version="1.0" encoding="UTF8"?>
 <toolchains>
-	<toolchain>
-		<type>jdk</type>
-		<provides>
-			<version>1.8</version>
-			<vendor>oracle</vendor>
-			<id>jdk-8u31-linux-x64</id>
-		</provides>
-		<configuration>
-			<jdkHome>/home/karl/workspaces/tools/jdk-8u31-linux-x64</jdkHome>
-		</configuration>
-	</toolchain>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>1.8</version>
+      <vendor>oracle</vendor>
+      <!-- Change the id value to match the jdk version on your system --> 
+      <id>jdk-8u31-linux-x64</id>
+    </provides>
+    <configuration>
+      <!-- Change the jdkHome value to point to the jdk location on your system --> 
+      <jdkHome>/home/myusername/workspaces/tools/jdk-8u31-linux-x64</jdkHome>
+    </configuration>
+  </toolchain>
 </toolchains>
 ```
 
