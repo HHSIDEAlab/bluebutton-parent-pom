@@ -17,10 +17,7 @@ It can be run as follows:
         ```
         $ apt-cyg install python3 python3-setuptools
         ```
-    __Note:__ If apt-cyg is having problems connecting to your cygwin mirror
-    this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does
-    not have additional decoration in it(i.e. x86_64-cygwin) and only contains
-    the architecture(i.e. x86_64) that you are attempting to install on.
+    __Note:__ If apt-cyg is having problems connecting to your cygwin mirror this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does not have additional decoration in it(i.e. x86_64-cygwin) and only contains the architecture(i.e. x86_64) that you are attempting to install on.
         ```
         # Example incorrect setting
         $ echo $HOSTTYPE
@@ -30,9 +27,7 @@ It can be run as follows:
         $ echo $HOSTTYPE
         x86_64
         ```
-    HOSTTYPE can be overridden on the command line or set in your shell
-    configuration(i.e. .bashrc, .cshrc, etc).  To override HOSTTYPE on the 
-    command line use the following construct:
+    HOSTTYPE can be overridden on the command line or set in your shell configuration(i.e. .bashrc, .cshrc, etc).  To override HOSTTYPE on the command line use the following construct:
         ```
         # for csh/tcsh
         > setenv HOSTTYPE x86_64 && apt-cyg <command>
@@ -40,7 +35,7 @@ It can be run as follows:
         # for bash
         $ HOSTTYPE=x86_64 apt-cyg <command>
         ```
-2. Run the script:
+1. Run the script:
 
     ```
     $ ./devenv-install.py
@@ -49,9 +44,11 @@ It can be run as follows:
 What does it do for you? Great question! It will create a `~/workspaces/tools/` directory and then download and install (as a user) the following into there for you:
 
 * An [Oracle Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [Eclipse Mars](https://eclipse.org/mars/)
+* [Latest Eclipse Version](https://www.eclipse.org/downloads/)
     * These Eclipse Plugins:
-        * [m2e-apt](https://developer.jboss.org/en/tools/blog/2012/05/20/annotation-processing-support-in-m2e-or-m2e-apt-100-is-out?_sscc=t): Allows Maven projects in Eclipse to easily leverage [the JDK's Annotation Processing framework](http://docs.oracle.com/javase/7/docs/technotes/guides/apt/).
+        * The __m2e-apt__ plugin allows Maven projects in Eclipse to easily leverage [the JDK's Annotation Processing framework](http://docs.oracle.com/javase/7/docs/technotes/guides/apt/).
+            * Install m2e-apt using the [Drag To Install](http://marketplace.eclipse.org/content/m2e-apt) option or install from within the Eclipse IDE by selecting _Eclipse Marketplace..._ from the _Help_ menu option and searching for _m2e-apt_ using the _Eclipse Marketplace_ find dialog box.  Click the _Install_ button for the plugin and restart Eclipse when prompted. 
+            * [Usage Instructions for m2e-apt](https://developer.jboss.org/en/tools/blog/2012/05/20/annotation-processing-support-in-m2e-or-m2e-apt-100-is-out?_sscc=t)
 * [Apache Maven](https://maven.apache.org/)
 
 If you're not using one of those supported platforms, or would prefer to setup things manually, you'll want to download and install the items listed above yourself.
