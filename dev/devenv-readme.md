@@ -17,12 +17,34 @@ It can be run as follows:
         ```
         $ apt-cyg install python3 python3-setuptools
         ```
-    
-1. Run the script:
+    __Note:__ If apt-cyg is having problems connecting to your cygwin mirror
+    this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does
+    not have additional decoration in it(i.e. x86_64-cygwin) and only contains
+    the architecture(i.e. x86_64) that you are attempting to install on.
+        ```
+        # Example incorrect setting
+        $ echo $HOSTTYPE
+        x86_64-cygwin
 
-    ````
+        # Example correct setting
+        $ echo $HOSTTYPE
+        x86_64
+        ```
+    HOSTTYPE can be overridden on the command line or set in your shell
+    configuration(i.e. .bashrc, .cshrc, etc).  To override HOSTTYPE on the 
+    command line use the following construct:
+        ```
+        # for csh/tcsh
+        > setenv HOSTTYPE x86_64 && apt-cyg <command>
+
+        # for bash
+        $ HOSTTYPE=x86_64 apt-cyg <command>
+        ```
+2. Run the script:
+
+    ```
     $ ./devenv-install.py
-    ````
+    ```
 
 What does it do for you? Great question! It will create a `~/workspaces/tools/` directory and then download and install (as a user) the following into there for you:
 
