@@ -12,12 +12,13 @@ First off, if you're on one of the following platforms, we provide the [devenv-i
 It can be run as follows:
 
 1. Install Python 3.
-    * On Windows, this can be done using [apt-cyg](https://github.com/transcode-open/apt-cyg), as follows:
+
+  On Windows, this can be done using [apt-cyg](https://github.com/transcode-open/apt-cyg), as follows:
     
         ```
         $ apt-cyg install python3 python3-setuptools
         ```
-    __Note:__ If apt-cyg is having problems connecting to your cygwin mirror this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does not have additional decoration in it(i.e. x86_64-cygwin) and only contains the architecture(i.e. x86_64) that you are attempting to install on.
+    __Note:__ If apt-cyg is having problems connecting to your cygwin mirror this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does not have additional decoration(i.e. x86_64-cygwin) and only contains the your system architecture(i.e. x86_64) that you are attempting to install on.
         ```
         # Example incorrect setting
         $ echo $HOSTTYPE
@@ -40,41 +41,46 @@ It can be run as follows:
     ```
     $ ./devenv-install.py
     ```
-1. Associate .sh files with Cygwin.
-  * Shell scripts that end in .sh should be associated with the Cygwin shell you have chosen to use.  Follow these steps to change the association for your installation:
-    1. Open a Command Prompt by pressing the Windows Key+R, type "cmd" and press return.
-    1. In the newly opened command prompt type:
+
+What does it do for you? Great question! It will create a `~/workspaces/tools/` directory and then download and install (as a user) the following into there for you:
+
+* An [Oracle Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Apache Maven](https://maven.apache.org/)
+* [Latest Eclipse Version](https://www.eclipse.org/downloads/)
+* Eclipse __m2e-apt__ Plugin
+    * The m2e-apt plugin allows Maven projects in Eclipse to easily leverage [the JDK's Annotation Processing framework](http://docs.oracle.com/javase/7/docs/technotes/guides/apt/).
+    * Install m2e-apt using the [Drag To Install](http://marketplace.eclipse.org/content/m2e-apt) option or install from within the Eclipse IDE by opeing **Help > Eclipse Marketplace...** and searching for **m2e-apt** using the **Eclipse Marketplace** find dialog box.  Click the **Install** button for the plugin and restart Eclipse when prompted. 
+    * [Usage Instructions for m2e-apt](https://developer.jboss.org/en/tools/blog/2012/05/20/annotation-processing-support-in-m2e-or-m2e-apt-100-is-out?_sscc=t)
+
+If you're not using one of those supported platforms, or would prefer to setup things manually, you'll want to download and install the items listed above yourself.
+
+## Cygwin Configuration
+
+### Associatng .sh files with Cygwin
+Shell scripts that end in .sh should be associated with the Cygwin shell you have chosen to use.  Follow these steps to change the association for your installation:
+
+  1. Open a Command Prompt by pressing the Windows Key+R, type "cmd" and press return.
+  1. In the newly opened command prompt type:
 
         ``` 
         # Everything after .sh= is the ftype name
         > assoc .sh
         .sh=sh_auto_file
         ``` 
-    1. Using the ftype name discovered in the previous step check the current association:
+  1. Using the ftype name discovered in the previous step check the current association:
 
         ```
         # Example of sh_auto_file set to use git-bash
         > ftype sh_auto_file
         sh_auto_file="C:\Git\git-bash.exe" --no-cd "%L" %*
         ```
-    1. If necessary, change the .sh association to use your Cygwin shell:
+  1. If necessary, change the .sh association to use your Cygwin shell:
 
         ```
         # Example setting Cygwin bash to be associated with .sh files 
         > ftype sh_auto_file="C:\cygwin64\bin\bash.exe" %1 %*"
         ```
-
-What does it do for you? Great question! It will create a `~/workspaces/tools/` directory and then download and install (as a user) the following into there for you:
-
-* An [Oracle Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [Latest Eclipse Version](https://www.eclipse.org/downloads/)
-    * These Eclipse Plugins:
-        * The __m2e-apt__ plugin allows Maven projects in Eclipse to easily leverage [the JDK's Annotation Processing framework](http://docs.oracle.com/javase/7/docs/technotes/guides/apt/).
-            * Install m2e-apt using the [Drag To Install](http://marketplace.eclipse.org/content/m2e-apt) option or install from within the Eclipse IDE by selecting _Eclipse Marketplace..._ from the _Help_ menu option and searching for _m2e-apt_ using the _Eclipse Marketplace_ find dialog box.  Click the _Install_ button for the plugin and restart Eclipse when prompted. 
-            * [Usage Instructions for m2e-apt](https://developer.jboss.org/en/tools/blog/2012/05/20/annotation-processing-support-in-m2e-or-m2e-apt-100-is-out?_sscc=t)
-* [Apache Maven](https://maven.apache.org/)
-
-If you're not using one of those supported platforms, or would prefer to setup things manually, you'll want to download and install the items listed above yourself.
+## Maven Configuration
 
 ### Maven `toolchains.xml`
 
@@ -99,34 +105,7 @@ Right now, the script does not create the Maven `toolchains.xml` file (though it
 </toolchains>
 ```
 
-## Git Large File Storage
-
-You'll also need to manually (boo!) download and install [Git Large File Storage](https://git-lfs.github.com/), which is used by some of the projects to store the large amounts of sample data needed in tests. Once installed, you need to run the following command once on your system:
-
-    $ git lfs install
-
-If you've already cloned any of our repos, you'll also want to run the following command in each of them to download and checkout any LFS files (future clones should do this automagically for you, now that it's installed):
-
-    $ git lfs pull
-
-## Eclipse Preferences
-
-If you're using Eclipse for development, you'll want to configure its preferences, as follows:
-
-1. Open **Window > Preferences**.
-1. Select **Java > Code Style > Code Templates**.
-    1. Click **Import...** and select this project's [eclipse-codetemplates.xml](./eclipse-codetemplates.xml) file.
-        * This configures the file, class, method, etc. comments on new items such that they match the existing style used in these projects.
-    1. Enable the **Automatically add comments for new methods and types** option.
-1. Select **Java > Code Style > Formatter**.
-    1. Click **Import...** and select this project's [eclipse-formatter.xml](./eclipse-formatter.xml) file.
-        * This configures the Eclipse autoformatter (`ctrl+shift+f`) to match the existing style used in these projects.
-1. Select **Java > Editor > Save Actions**.
-    1. Enable the **Perform the selected actions on save** option.
-    1. Enable the **Format source code** option.
-1. Click **OK**.
-
-## Maven GPG Signing
+### Maven GPG Signing
 
 Given that most of this project's builds go through Maven Central, all builds for the project have signing turned on by default. If you do not have a GPG key configured on your system, you will receive errors like the following:
 
@@ -156,6 +135,46 @@ GPG signing can also be disabled by adding `-Dgpg.skip=true` to your Maven build
     $ mvn clean verify -Dgpg.skip=true
 
 But please note that the `deploy` goal/phase will still fail if builds are not signed by an authorized user, as that's a requirement imposed by the repository itself.
+
+## Git Large File Storage
+
+You'll also need to manually (boo!) download and install [Git Large File Storage](https://git-lfs.github.com/), which is used by some of the projects to store the large amounts of sample data needed in tests. Once installed, you need to run the following command once on your system:
+
+    $ git lfs install
+
+If you've already cloned any of our repos, you'll also want to run the following command in each of them to download and checkout any LFS files (future clones should do this automagically for you, now that it's installed):
+
+    $ git lfs pull
+
+## Eclipse Configuration
+
+The following instructions are to be executed from within the Eclipse IDE application to ensure proper configuration.
+
+### Eclipse JDK
+
+Verify Eclipse is using the correct JDK.
+
+1. Open **Window > Preferences**.
+1. Select **Java > Installed JREs**.
+1. If your JDK does not appear in the **Installed JREs** table add it by clicking the **Add** button, select **Standard VM** and locate your installation using the **Directory...** button.
+1. Ensure your JDK is selected in the **Installed JREs** table by checking the checkbox next to the JDK you wish to use.
+
+### Eclipse Preferences
+
+If you're using Eclipse for development, you'll want to configure its preferences, as follows:
+
+1. Open **Window > Preferences**.
+1. Select **Java > Code Style > Code Templates**.
+    1. Click **Import...** and select this project's [eclipse-codetemplates.xml](./eclipse-codetemplates.xml) file.
+        * This configures the file, class, method, etc. comments on new items such that they match the existing style used in these projects.
+    1. Enable the **Automatically add comments for new methods and types** option.
+1. Select **Java > Code Style > Formatter**.
+    1. Click **Import...** and select this project's [eclipse-formatter.xml](./eclipse-formatter.xml) file.
+        * This configures the Eclipse autoformatter (`ctrl+shift+f`) to match the existing style used in these projects.
+1. Select **Java > Editor > Save Actions**.
+    1. Enable the **Perform the selected actions on save** option.
+    1. Enable the **Format source code** option.
+1. Click **OK**.
 
 ## OSSRH Hosting
 
