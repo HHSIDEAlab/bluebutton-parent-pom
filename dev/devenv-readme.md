@@ -3,6 +3,10 @@ Development Environment Setup
 
 Thinking of contributing to this project or some of the other Java-based Blue Button projects? Great! This document provides some help on getting a development environment setup for that work.
 
+## AWS Credentials
+
+**Attention:** Many of the automated tests associated with the Blue Button framework use AWS resources.  Before running a build using Maven or importing projects into your Eclipse IDE, which will run a build automatically, please ensure the appropriate accounts and credentials are configured within your environment.  This will prevent unexpected charges from occurring on your AWS account.
+
 ## Automation FTW!
 
 First off, if you're on one of the following platforms, we provide the [devenv-install.py](./devenv-install.py) script, which automates most of the work for you. It supports:
@@ -49,14 +53,14 @@ What does it do for you? Great question! It will create a `~/workspaces/tools/` 
 * [Latest Eclipse Version](https://www.eclipse.org/downloads/)
 * Eclipse __m2e-apt__ Plugin
     * The m2e-apt plugin allows Maven projects in Eclipse to easily leverage [the JDK's Annotation Processing framework](http://docs.oracle.com/javase/7/docs/technotes/guides/apt/).
-    * Install m2e-apt using the [Drag To Install](http://marketplace.eclipse.org/content/m2e-apt) option or install from within the Eclipse IDE by opeing **Help > Eclipse Marketplace...** and searching for **m2e-apt** using the **Eclipse Marketplace** find dialog box.  Click the **Install** button for the plugin and restart Eclipse when prompted. 
+    * Install m2e-apt using the [Drag To Install](http://marketplace.eclipse.org/content/m2e-apt) option or install from within the Eclipse IDE by opening **Help > Eclipse Marketplace...** and searching for **m2e-apt** using the **Eclipse Marketplace** find dialog box.  Click the **Install** button for the plugin and restart Eclipse when prompted. 
     * [Usage Instructions for m2e-apt](https://developer.jboss.org/en/tools/blog/2012/05/20/annotation-processing-support-in-m2e-or-m2e-apt-100-is-out?_sscc=t)
 
 If you're not using one of those supported platforms, or would prefer to setup things manually, you'll want to download and install the items listed above yourself.
 
 ## Cygwin Configuration
 
-### Associatng .sh files with Cygwin
+### Associating .sh files with Cygwin
 Shell scripts that end in .sh should be associated with the Cygwin shell you have chosen to use.  Follow these steps to change the association for your installation:
 
   1. Open a Command Prompt by pressing the Windows Key+R, type "cmd" and press return.
@@ -175,6 +179,17 @@ If you're using Eclipse for development, you'll want to configure its preference
     1. Enable the **Perform the selected actions on save** option.
     1. Enable the **Format source code** option.
 1. Click **OK**.
+
+### Importing Maven Projects into Eclipse
+
+If you have already cloned Blue Button repositories to your system they can easily be added to your Eclipse workspace using the **Import** feature.
+
+1. Open **File > Import...**.
+1. Select **Existing Maven Projects**.
+1. Specify a **Root Directory** using the **Browse...** button or by typing in a path.
+1. Select the pom files you want to import from the **Projects** table.
+1. Click **Finish**.
+1. The projects and packages you selected will now appear in the **Project Explorer** window.
 
 ## OSSRH Hosting
 
