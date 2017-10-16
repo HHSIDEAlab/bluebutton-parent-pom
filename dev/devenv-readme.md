@@ -19,27 +19,28 @@ It can be run as follows:
 
   On Windows, this can be done using [apt-cyg](https://github.com/transcode-open/apt-cyg), as follows:
     
-        ```
-        $ apt-cyg install python3 python3-setuptools
-        ```
+    ```
+    $ apt-cyg install python3 python3-setuptools
+    ```
+
     __Note:__ If apt-cyg is having problems connecting to your cygwin mirror this may be due to an incorrect HOSTTYPE setting.  Verify your HOSTTYPE does not have additional decoration(i.e. x86_64-cygwin) and only contains the your system architecture(i.e. x86_64) that you are attempting to install on.
-        ```
-        # Example incorrect setting
-        $ echo $HOSTTYPE
-        x86_64-cygwin
+    ```
+    # Example incorrect setting
+    $ echo $HOSTTYPE
+    x86_64-cygwin
 
-        # Example correct setting
-        $ echo $HOSTTYPE
-        x86_64
-        ```
+    # Example correct setting
+    $ echo $HOSTTYPE
+    x86_64
+    ```
     HOSTTYPE can be overridden on the command line or set in your shell configuration(i.e. .bashrc, .cshrc, etc).  To override HOSTTYPE on the command line use the following construct:
-        ```
-        # for csh/tcsh
-        > setenv HOSTTYPE x86_64 && apt-cyg <command>
+    ```
+    # for csh/tcsh
+    > setenv HOSTTYPE x86_64 && apt-cyg <command>
 
-        # for bash
-        $ HOSTTYPE=x86_64 apt-cyg <command>
-        ```
+    # for bash
+    $ HOSTTYPE=x86_64 apt-cyg <command>
+    ```
 1. Run the script:
 
     ```
@@ -66,24 +67,25 @@ Shell scripts that end in .sh should be associated with the Cygwin shell you hav
   1. Open a Command Prompt by pressing the Windows Key+R, type "cmd" and press return.
   1. In the newly opened command prompt type:
 
-        ``` 
-        # Everything after .sh= is the ftype name
-        > assoc .sh
-        .sh=sh_auto_file
-        ``` 
+    ``` 
+    # Everything after .sh= is the ftype name
+    > assoc .sh
+    .sh=sh_auto_file
+    ``` 
   1. Using the ftype name discovered in the previous step check the current association:
 
-        ```
-        # Example of sh_auto_file set to use git-bash
-        > ftype sh_auto_file
-        sh_auto_file="C:\Git\git-bash.exe" --no-cd "%L" %*
-        ```
+    ```
+    # Example of sh_auto_file set to use git-bash
+    > ftype sh_auto_file
+    sh_auto_file="C:\Git\git-bash.exe" --no-cd "%L" %*
+    ```
   1. If necessary, change the .sh association to use your Cygwin shell:
 
-        ```
-        # Example setting Cygwin bash to be associated with .sh files 
-        > ftype sh_auto_file="C:\cygwin64\bin\bash.exe" %1 %*"
-        ```
+    ```
+    # Example setting Cygwin bash to be associated with .sh files 
+    > ftype sh_auto_file="C:\cygwin64\bin\bash.exe" %1 %*
+    ```
+
 ## Maven Configuration
 
 ### Maven `toolchains.xml`
