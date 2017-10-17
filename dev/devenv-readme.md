@@ -3,10 +3,6 @@ Development Environment Setup
 
 Thinking of contributing to this project or some of the other Java-based Blue Button projects? Great! This document provides some help on getting a development environment setup for that work.
 
-## AWS Credentials
-
-**Attention:** Many of the automated tests associated with the Blue Button framework use AWS resources.  Before running a build using Maven or importing projects into your Eclipse IDE, which will run a build automatically, please ensure the appropriate accounts and credentials are configured within your environment.  This will prevent unexpected charges from occurring on your AWS account.
-
 ## Automation FTW!
 
 First off, if you're on one of the following platforms, we provide the [devenv-install.py](./devenv-install.py) script, which automates most of the work for you. It supports:
@@ -86,6 +82,28 @@ Shell scripts that end in .sh should be associated with the Cygwin shell you hav
     > ftype sh_auto_file="C:\cygwin64\bin\bash.exe" %1 %*
     ```
 
+## AWS Configuration
+
+### AWS Credentials
+
+Many of the automated tests associated with the Blue Button framework use AWS resources.  Before running a build using Maven or importing projects into your Eclipse IDE, which will run a build automatically, please ensure the appropriate accounts and credentials are configured within your environment.  **This is necessary to prevent incurring unwanted charges on the wrong AWS account**.
+
+Below are links to detailed instructions on configuring your AWS credentials for your environment:
+
+  * [Configuring the AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+  * [Configuration and Credential Files](http://docs.aws.amazon.com/cli/latest/userguide/cli-config-files.html)
+
+## Github Configuration
+
+### Github SSH
+
+You will need to configure an SSH credential in order to clone the Blue Button repositories.  Instructions are thoroughly documented on Github but for convenience here are the relevant links:
+
+  * [Connecting to Github with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/)
+  * [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
+  * [Adding a new SSH key to your GitHub account](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
+  * [Testing your SSH connection](https://help.github.com/articles/testing-your-ssh-connection/)
+
 ## Maven Configuration
 
 ### Maven `toolchains.xml`
@@ -138,9 +156,30 @@ To fix these errors, the simplest thing to do is just install GPG and create key
 
 GPG signing can also be disabled by adding `-Dgpg.skip=true` to your Maven builds, e.g.:
 
-    $ mvn clean verify -Dgpg.skip=true
+```
+$ mvn clean verify -Dgpg.skip=true
+```
 
 But please note that the `deploy` goal/phase will still fail if builds are not signed by an authorized user, as that's a requirement imposed by the repository itself.
+
+### Proper HAPI-FHIR branch
+
+Currently the Blue Button repositories require a specific version of the HAPI-FHIR libraries in order to build successfully.  The following commands should be run in order to configure the required libraries properly for the build:
+
+```
+$ git clone git@github.com:HHSIDEAlab/hapi-fhir.git
+$ cd hapi-fhir
+$ git checkout -b fix-race-condition-in-if-none-exists-2.4 origin/fix-race-condition-in-if-none-exists-2.4
+$ mvn clean install
+```
+
+### Skipping Tests
+
+The default install goal for the maven build will run the integration tests.  If you do not want to run them as some do use AWS resources use the following command line when executing the build:
+
+```
+$ mvn clean install -DskipITs
+```
 
 ## Git Large File Storage
 
@@ -193,6 +232,20 @@ If you have already cloned Blue Button repositories to your system they can easi
 1. Click **Finish**.
 1. The projects and packages you selected will now appear in the **Project Explorer** window.
 
+### Enable Auto-generated Code
+
+Some of the projects use the m2e-apt plugin to generate source code that is compiled into some of the jars.  This is not enabled by default but can be by easily following these steps:
+
+1. In the **Project Explorer** right-click on the **bluebutton-data-model-rif** project and select **Properties**.
+1. In the **Properties** dialog, on the left-hand side select **Java Compiler > Annotation Processing**.
+1. Check the checkbox labeled **Enable project specific settings".
+1. In the **Generated source directory** editbox enter the following:
+```
+target/generated-sources/annotations
+```
+1. Click the **Apply and Close** button.
+1. When prompted to rebuild the project select **Yes**.
+  
 ## OSSRH Hosting
 
 Even with a GPG key, you will be unable to deploy to OSSRH/Maven Central, unless your account has been given permissions to do so. This will result in errors like the following:
